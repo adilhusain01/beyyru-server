@@ -69,6 +69,7 @@ const registerUser = async (req, res) => {
       res.status(400).json({ message: 'Invalid user data' });
     }
   } catch (error) {
+    console.log(error);
     res.status(500).json({ message: 'Server error' });
   }
 };
@@ -114,6 +115,7 @@ const loginUser = async (req, res) => {
       res.status(401).json({ message: 'Invalid email or password' });
     }
   } catch (error) {
+    console.log(error);
     res.status(500).json({ message: 'Server error' });
   }
 };
@@ -132,6 +134,7 @@ const getUsers = async (req, res) => {
     );
     res.status(200).json(usersWithDetails);
   } catch (error) {
+    console.log(error);
     res.status(500).json({ message: 'Server error' });
   }
 };
@@ -149,6 +152,7 @@ const getUserById = async (req, res) => {
     const purchases = await Purchase.find({ userId: user._id });
     res.status(200).json({ ...user._doc, address, purchases });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ message: 'Server error' });
   }
 };
@@ -188,6 +192,7 @@ const updateUser = async (req, res) => {
     await user.save();
     res.status(200).json(user);
   } catch (error) {
+    console.log(error);
     res.status(500).json({ message: 'Server error' });
   }
 };
@@ -207,6 +212,7 @@ const deleteUser = async (req, res) => {
     await User.findByIdAndDelete(id);
     res.status(200).json({ message: 'User deleted successfully' });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ message: 'Server error' });
   }
 };

@@ -1,11 +1,10 @@
 const mongoose = require('mongoose');
 
-// Schema for Product Card
 const productSchema = new mongoose.Schema(
   {
     images: {
       type: [String],
-      required: true, // URL for the product image
+      required: true,
     },
     name: {
       type: String,
@@ -16,27 +15,39 @@ const productSchema = new mongoose.Schema(
       required: true,
     },
     previousPrice: {
-      type: Number, // Store the previous price
+      type: Number,
       required: true,
     },
     currentPrice: {
-      type: Number, // Store the current price
+      type: Number,
       required: true,
     },
     type: {
-      type: [String], // Array of types
+      type: String,
       required: true,
     },
     ingredients: {
-      type: [String], // Array of ingredients
+      type: [String],
       required: true,
     },
     conditions: {
-      type: [String], // Array of conditions the product addresses
+      type: [String],
       required: true,
     },
     demographic: {
-      type: [String], // Array of demographic targets (e.g., adults, kids)
+      type: [String],
+      required: true,
+    },
+    quantity: {
+      type: Number,
+      required: true,
+    },
+    soldQuantity: {
+      type: Number,
+      default: 0,
+    },
+    sku: {
+      type: String,
       required: true,
     },
   },

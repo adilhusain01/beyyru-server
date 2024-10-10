@@ -1,7 +1,7 @@
 const express = require('express');
 const {
   addAddress,
-  getAddresses,
+  getAddress,
   updateAddress,
   deleteAddress,
 } = require('../controllers/addressController');
@@ -9,9 +9,9 @@ const {
 const router = express.Router();
 
 // Address routes
-router.post('/add', addAddress);
-router.get('/:userId', getAddresses);
-router.put('/update', updateAddress);
-router.delete('/delete', deleteAddress);
+router.post('/:userId', addAddress);
+router.get('/:userId', getAddress);
+router.put('/:userId', updateAddress);
+router.delete('/:userId', deleteAddress);
 
 module.exports = router;
