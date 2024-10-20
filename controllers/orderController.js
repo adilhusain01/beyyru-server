@@ -344,7 +344,7 @@ exports.getOrdersByUserId = async (req, res) => {
 
     res.status(200).json({ orders });
   } catch (error) {
-    console.error(error);
+    console.log(error);
     res.status(500).json({ message: 'Error fetching user orders' });
   }
 };
@@ -373,7 +373,7 @@ exports.getAllOrders = async (req, res) => {
       totalOrders,
     });
   } catch (error) {
-    console.error(error);
+    console.log(error);
     res.status(500).json({ message: 'Error fetching orders' });
   }
 };
@@ -394,7 +394,7 @@ exports.trackShipment = async (req, res) => {
 
     res.status(200).json({ trackingData });
   } catch (error) {
-    console.error('Error tracking shipment:', error);
+    console.log('Error tracking shipment:', error);
     res.status(500).json({ message: 'Error tracking shipment' });
   }
 };
@@ -402,14 +402,16 @@ exports.trackShipment = async (req, res) => {
 exports.testShiprocketIntegration = async (req, res) => {
   try {
     // Test login
-    console.log('Attempting Shiprocket login...');
+    // console.log('Attempting Shiprocket login...');
     const loginResponse = await shiprocketService.login();
-    console.log('Shiprocket login successful. Token:', loginResponse.token);
+    // console.log('Shiprocket login successful. Token:', loginResponse.token);
+
+    const order_date = new Date().toISOString().split('T')[0];
 
     // Test create order
     const testOrderData = {
       order_id: 'test-order-' + Date.now(),
-      order_date: new Date().toISOString().split('T')[0],
+      order_date,
       pickup_location: 'Primary',
       channel_id: '',
       comment: 'Test Order',
@@ -440,17 +442,17 @@ exports.testShiprocketIntegration = async (req, res) => {
       weight: 1,
     };
 
-    console.log('Attempting to create Shiprocket order...');
+    // console.log('Attempting to create Shiprocket order...');
     const createdOrder = await shiprocketService.createOrder(testOrderData);
-    console.log('Shiprocket order created:', createdOrder);
+    // console.log('Shiprocket order created:', createdOrder);
 
     // Test track shipment
     if (createdOrder.shipment_id) {
-      console.log('Attempting to track shipment...');
+      // console.log('Attempting to track shipment...');
       const trackingData = await shiprocketService.trackShipment(
         createdOrder.shipment_id
       );
-      console.log('Shipment tracking data:', trackingData);
+      // console.log('Shipment tracking data:', trackingData);
     }
 
     res.status(200).json({
@@ -458,31 +460,30 @@ exports.testShiprocketIntegration = async (req, res) => {
       createdOrder,
     });
   } catch (error) {
-    console.error('Shiprocket integration test failed:', error);
-    if (error.response) {
-      console.error('Error response:', error.response.data);
-      console.error('Error status:', error.response.status);
-      console.error('Error headers:', error.response.headers);
-    } else if (error.request) {
-      console.error('Error request:', error.request);
-    } else {
-      console.error('Error message:', error.message);
-    }
+    console.log(error);
+    // if (error.response) {
+    //   console.error('Error response:', error.response.data);
+    //   console.error('Error status:', error.response.status);
+    //   console.error('Error headers:', error.response.headers);
+    // } else if (error.request) {
+    //   console.error('Error request:', error.request);
+    // } else {
+    //   console.error('Error message:', error.message);
+    // }
     res.status(500).json({
       message: 'Shiprocket integration test failed',
-      error: error.message,
-      details: error.response ? error.response.data : null,
     });
   }
 };
 
 // Ensure createShiprocketOrder function is defined correctly
 async function createShiprocketOrder(order) {
-  console.log(order, 'order');
+  const order_date = new Date().toISOString().split('T')[0];
+  // console.log(order, 'order');
   try {
     const shiprocketOrderData = {
       order_id: order._id.toString(),
-      order_date: order.createdAt.toISOString().split('T')[0],
+      order_date,
       pickup_location: 'Primary',
       channel_id: '',
       comment: 'Order created via API',
@@ -513,7 +514,8 @@ async function createShiprocketOrder(order) {
 
     return await shiprocketService.createOrder(shiprocketOrderData);
   } catch (error) {
-    console.error('Error creating Shiprocket order:', error);
+    console.log(error);
     throw error;
   }
 }
+
